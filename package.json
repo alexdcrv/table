@@ -5,8 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "export": "--EXPORT=true next export",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@metamask/providers": "^8.1.1",
