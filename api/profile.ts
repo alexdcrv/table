@@ -3,11 +3,12 @@ import request, { IResponse } from '../service'
 // import { IProfile } from 'types/profile.types'
 
 export interface IFetchProfileResponseData {
-    address: string;
-    account: any;
-    exp: number;
-    iat: number;
-    permissions: string[]
+    email: string
+    fullname: any
+    wins?: Number
+    loses?: Number
+    _id: string
+    isAdmin?: boolean
 }
 
 export function fetchProfile() {

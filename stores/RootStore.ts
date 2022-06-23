@@ -2,22 +2,26 @@ import { Container } from 'inversify'
 import { UserStore } from './UserStore'
 import { ModalStore } from './ModalStore'
 import { useMemo } from 'react'
-import WalletStore from "./WalletStore";
+import { GamesStore } from './GamesStore'
+import { SeasonsStore } from './SeasonsStore'
+
 
 export class RootStore {
     public userStore: UserStore
     public container: Container
     public modalStore: ModalStore
-
-    public walletStore: WalletStore;
+    public gamesStore: GamesStore
+    public seasonsStore: SeasonsStore
     public constructor() {
         this.userStore = new UserStore(this)
         this.modalStore = new ModalStore(this)
-        this.walletStore = new WalletStore(this);
+        this.gamesStore = new GamesStore(this)
+        this.seasonsStore = new SeasonsStore(this)
         this.container = new Container()
         this.container.bind(UserStore).toConstantValue(this.userStore)
+        this.container.bind(GamesStore).toConstantValue(this.gamesStore)
+        this.container.bind(SeasonsStore).toConstantValue(this.seasonsStore)
         this.container.bind(ModalStore).toConstantValue(this.modalStore)
-        this.container.bind(WalletStore).toConstantValue(this.walletStore);
         this.container.bind(Container).toConstantValue(this.container)
     }
 }
