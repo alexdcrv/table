@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const backendUrl = 'http://localhost:3545';
 export const addUser = axios.create ({
-    withCredentials: true,
     baseURL: backendUrl,
     headers: {
         accept: 'application/json',
