@@ -5,7 +5,7 @@ import Header, { links } from "../header/header";
 import { PlayerProps } from "./player";
 import style from "../../pages/players/player.module.sass";
 import { observer } from "mobx-react";
-import { IFetchProfileResponseData } from "../../api/profile";
+import { IUser } from "../../api/profile";
 import { GamesStore } from "../../stores/GamesStore";
 import { SeasonsStore } from "../../stores/SeasonsStore";
 export interface ISet {
@@ -118,8 +118,13 @@ const CrateGame = observer(() => {
         loser: userStore.users[1]._id,
       });
     }
-  }, [userStore.users]);
 
+  }, [userStore.users]);
+  useEffect(()=>{
+    return () =>{
+      setLeague("")
+    }
+  },[])
   const choosePlayers = (e: any) => {
     setPlayers({ ...players, [e.target.name]: e.target.value });
   };

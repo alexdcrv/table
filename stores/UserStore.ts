@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import { configure, makeObservable, observable } from "mobx";
 import "reflect-metadata";
 import { RootStore } from "./RootStore";
-import { IFetchProfileResponseData } from "../api/profile";
+import { IUser } from "../api/profile";
 import axios from "axios";
 import { addUser, backendUrl, withCookies } from "../components/utils";
 import { EditableFields } from "../pages/players/[id]";
@@ -18,9 +18,10 @@ export const rightLegaues = {
 };
 @injectable()
 export class UserStore {
-  @observable user?: IFetchProfileResponseData | null = null;
-  @observable me?: IFetchProfileResponseData | null = null;
-  @observable users?: IFetchProfileResponseData[] | null = null;
+  @observable user?: IUser | null = null;
+  @observable me?: IUser | null = null;
+  @observable users?: IUser[] | null = null;
+  @observable allUsers?: IUser[] | null = null;
   @observable isAuth?: boolean = false;
   public constructor(private readonly rootStore: RootStore) {
     makeObservable(this);
@@ -57,17 +58,24 @@ export class UserStore {
     isAdmin?: boolean
   ) {
     try {
-      const { data } = await addUser.post(
+      
+      if (!isAdmin) {
+        const { data } = await withCookies.post(
         `${backendUrl}/auth/register`,
         body
       );
-      if (!isAdmin) {
         localStorage.setItem("token", data.accessToken);
         this.Auth();
         console.log(data);
         this.me = data.user;
         return data.user._id;
-      } else return data.user._id;
+      } else {
+        const { data } = await addUser.post(
+          `${backendUrl}/auth/register`,
+          body
+        );
+        return data.user._id;
+      }
     } catch (e) {
       console.log(e);
       return false;
@@ -86,7 +94,18 @@ export class UserStore {
       console.log(e);
     }
   }
-
+  async getAllUsers () {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/users/getUsers/all`
+      );
+      console.log(data);
+      this.allUsers = data.users;
+      return data.users;
+    } catch (e) {
+      console.log(e);
+    }
+  }
   async changeUser(body: EditableFields, id: string, league: string) {
     try {
       //@ts-ignore

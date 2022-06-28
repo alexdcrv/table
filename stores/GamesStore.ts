@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import {  configure, makeObservable, observable } from 'mobx'
 import 'reflect-metadata'
 import { RootStore } from './RootStore'
-import {IFetchProfileResponseData} from "../api/profile";
+import {IUser} from "../api/profile";
 import axios from "axios";
 import { backendUrl, withCookies } from '../components/utils';
 import { EditableFields } from '../pages/players/[id]';
